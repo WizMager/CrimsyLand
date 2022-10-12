@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using System.Collections;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,10 +11,11 @@ namespace Game
         [SerializeField] private Camera mainCamera;
         [SerializeField] private Transform playerBody;
         [SerializeField] private Transform shootPosition;
-        [SerializeField] private GameObject bullet;
         [SerializeField] private float moveSpeed;
+        [SerializeField] private float shootCooldown;
         private InputActions _inputActions;
         private Vector3 _mouseWorldPosition;
+        private bool _shootAvailable = true;
 
         #region MonoBeh
 
@@ -65,9 +67,21 @@ namespace Game
 
         private void Shoot()
         {
+            if (!_shootAvailable) return;
             var shootAction = _inputActions.MouseAndKeyboard.Shoot;
             if (shootAction.phase != InputActionPhase.Performed) return;
-            Instantiate(bullet, shootPosition.position, shootPosition.rotation);
+            PhotonNetwork.Instantiate("Bullet", shootPosition.position, shootPosition.rotation);
+            _shootAvailable = false;
+            StartCoroutine(ShootCooldown());
+        }
+
+        private IEnumerator ShootCooldown()
+        {
+            for (float i = 0; i < shootCooldown; i += Time.deltaTime)
+            {
+                yield return null;
+            }
+            _shootAvailable = true;
         }
     }
 }
