@@ -11,6 +11,7 @@ namespace Game
         [SerializeField] private Camera mainCamera;
         [SerializeField] private Transform playerBody;
         [SerializeField] private Transform shootPosition;
+        [SerializeField] private GameObject bulletPrefab;
         [SerializeField] private float moveSpeed;
         [SerializeField] private float shootCooldown;
         private InputActions _inputActions;
@@ -70,7 +71,7 @@ namespace Game
             if (!_shootAvailable) return;
             var shootAction = _inputActions.MouseAndKeyboard.Shoot;
             if (shootAction.phase != InputActionPhase.Performed) return;
-            PhotonNetwork.Instantiate("Bullet", shootPosition.position, shootPosition.rotation);
+            PhotonNetwork.Instantiate(bulletPrefab.name, shootPosition.position, shootPosition.rotation);
             _shootAvailable = false;
             StartCoroutine(ShootCooldown());
         }

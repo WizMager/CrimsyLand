@@ -346,6 +346,7 @@ MonoBehaviour:
   mainCamera: {fileID: 1117250996}
   playerBody: {fileID: 5538048560568880282}
   shootPosition: {fileID: 3563326148317500912}
+  bulletPrefab: {fileID: 1949895538704787675, guid: 7adfb88fc2e3d18488d3fa9ebb27ede3, type: 3}
   moveSpeed: 5
   shootCooldown: 0.5
 --- !u!114 &3563326149589687580
