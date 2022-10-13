@@ -21,10 +21,27 @@ namespace Game
             }
         }
 
+        #region Monobeh
+
         private void Start()
         {
             StartCoroutine(RecheckNearestEnemyCooldown());
         }
+        
+        private void FixedUpdate()
+        {
+            transform.position =
+                Vector3.MoveTowards(transform.position, _currentTarget.position, moveSpeed * Time.fixedDeltaTime);
+        }
+
+        private void OnDestroy()
+        {
+            StopCoroutine(RecheckNearestEnemyCooldown());
+        }
+
+        #endregion
+
+        #region CheckNearestPlayer
 
         private IEnumerator RecheckNearestEnemyCooldown()
         {
@@ -55,16 +72,7 @@ namespace Game
             _currentTarget = _playersTransform[CheckNearestPlayerIndex()];
             StartCoroutine(RecheckNearestEnemyCooldown());
         }
-        
-        private void FixedUpdate()
-        {
-            transform.position =
-                Vector3.MoveTowards(transform.position, _currentTarget.position, moveSpeed * Time.fixedDeltaTime);
-        }
 
-        private void OnDestroy()
-        {
-            StopCoroutine(RecheckNearestEnemyCooldown());
-        }
+        #endregion
     }
 }
