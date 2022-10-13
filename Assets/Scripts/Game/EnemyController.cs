@@ -1,16 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Game.Interfaces;
+using Photon.Pun;
 using UnityEngine;
 
 namespace Game
 {
-    public class EnemyController : MonoBehaviour
+    public class EnemyController : MonoBehaviour, IEnemy
     {
         [SerializeField] private float moveSpeed;
+        [SerializeField] private int health;
         [SerializeField] private float timeRecheckNearestPlayer;
         private List<Transform> _playersTransform = new List<Transform>();
         private Transform _currentTarget;
         
+        public float Health { get; set; }
+        public float MoveSpeed => moveSpeed;
         public List<Transform> SetPlayersTransform
         {
             set
@@ -25,13 +30,13 @@ namespace Game
 
         private void Start()
         {
+            Health = health;
             StartCoroutine(RecheckNearestEnemyCooldown());
         }
         
         private void FixedUpdate()
         {
-            transform.position =
-                Vector3.MoveTowards(transform.position, _currentTarget.position, moveSpeed * Time.fixedDeltaTime);
+           Move(Time.fixedDeltaTime); 
         }
 
         private void OnDestroy()
@@ -74,5 +79,19 @@ namespace Game
         }
 
         #endregion
+
+        
+        public void ReceiveDamage(float damage)
+        {
+            Health -= damage;
+            if (Health > 0) return;
+            PhotonNetwork.Destroy(gameObject);
+        }
+        
+        public void Move(float deltaTime)
+        {
+            transform.position =
+                Vector3.MoveTowards(transform.position, _currentTarget.position, moveSpeed * deltaTime);
+        }
     }
 }
