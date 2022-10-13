@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using System;
+using Photon.Pun;
 using UnityEngine;
 
 namespace Game
@@ -8,11 +9,11 @@ namespace Game
         [SerializeField] private float startSpeed;
         [SerializeField] private float maxMoveDistance;
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (maxMoveDistance > 0)
             {
-                var frameMove = Time.deltaTime * startSpeed;
+                var frameMove = Time.fixedDeltaTime * startSpeed;
                 maxMoveDistance -= frameMove;
                 transform.Translate(transform.up * frameMove, Space.World);
             }
