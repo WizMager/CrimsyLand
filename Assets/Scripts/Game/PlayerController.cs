@@ -8,12 +8,12 @@ namespace Game
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private PhotonView photonView;
-        [SerializeField] private Camera mainCamera;
         [SerializeField] private Transform playerBody;
         [SerializeField] private Transform shootPosition;
         [SerializeField] private GameObject bulletPrefab;
         [SerializeField] private float moveSpeed;
         [SerializeField] private float shootCooldown;
+        private Camera _mainCamera;
         private InputActions _inputActions;
         private Vector3 _mouseWorldPosition;
         private bool _shootAvailable = true;
@@ -23,6 +23,7 @@ namespace Game
         private void Awake()
         {
             _inputActions = new InputActions();
+            _mainCamera = Camera.main;
         }
 
         private void OnEnable()
@@ -60,7 +61,7 @@ namespace Game
             var aimAction = _inputActions.MouseAndKeyboard.Aim;
             if (aimAction.phase != InputActionPhase.Started) return;
             var mousePosition = aimAction.ReadValue<Vector2>();
-            _mouseWorldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
+            _mouseWorldPosition = _mainCamera.ScreenToWorldPoint(mousePosition);
             var lookMouseDirection = (playerBody.position - _mouseWorldPosition).normalized;
             var angleAxisZ = Mathf.Atan2(lookMouseDirection.y, lookMouseDirection.x) * Mathf.Rad2Deg + 90;
             playerBody.rotation = Quaternion.Euler(0, 0, angleAxisZ);
