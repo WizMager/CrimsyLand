@@ -35,11 +35,6 @@ namespace Game
 
         private void FixedUpdate()
         {
-            //For switch weapon test
-            if (_inputActions.MouseAndKeyboard.SpaceBar.phase == InputActionPhase.Performed)
-            {
-                _weapon = _weaponSwitcher.SwitchWeapon(WeaponIndex.Rifle);
-            }
             if (!photonView.IsMine) return;
             var fixedDeltaTime = Time.fixedDeltaTime;
             Move(fixedDeltaTime);

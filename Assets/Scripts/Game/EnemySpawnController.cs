@@ -56,7 +56,7 @@ namespace Game
         {
             var randomSpawnPosition = Random.Range(0, _enemySpawnPositions.Length);
             var randomEnemyType = Random.Range(0, enemyPrefabs.Length);
-            var enemy = PhotonNetwork.Instantiate(enemyPrefabs[randomEnemyType].name, _enemySpawnPositions[randomSpawnPosition].position, Quaternion.identity).GetComponent<EnemyController>();
+            var enemy = PhotonNetwork.Instantiate($"Enemies/{enemyPrefabs[randomEnemyType].name}", _enemySpawnPositions[randomSpawnPosition].position, Quaternion.identity).GetComponent<EnemyController>();
             enemy.SetPlayersTransform = _playerTransforms;
             _enemies.Add(enemy);
             StartCoroutine(SpawnEnemy());
