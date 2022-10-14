@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ComponentScripts;
+using Game.Interfaces;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,14 +10,13 @@ namespace Game
     {
         [SerializeField] private PhotonView photonView;
         [SerializeField] private Transform playerBody;
-        [SerializeField] private Transform shootPosition;
-        [SerializeField] private GameObject bulletPrefab;
+        [SerializeField] private WeaponContainerComponent weaponContainer;
         [SerializeField] private float moveSpeed;
-        [SerializeField] private float shootCooldown;
+        private WeaponSwitcher _weaponSwitcher;
+        private IWeapon _weapon;
         private Camera _mainCamera;
         private InputActions _inputActions;
         private Vector3 _mouseWorldPosition;
-        private bool _shootAvailable = true;
 
         #region MonoBeh
 
@@ -24,6 +24,8 @@ namespace Game
         {
             _inputActions = new InputActions();
             _mainCamera = Camera.main;
+            _weaponSwitcher = new WeaponSwitcher(weaponContainer.GetWeaponsGameObjects);
+            _weapon = _weaponSwitcher.SwitchWeapon(WeaponIndex.Pistol);
         }
 
         private void OnEnable()
@@ -33,6 +35,11 @@ namespace Game
 
         private void FixedUpdate()
         {
+            //For switch weapon test
+            if (_inputActions.MouseAndKeyboard.SpaceBar.phase == InputActionPhase.Performed)
+            {
+                _weapon = _weaponSwitcher.SwitchWeapon(WeaponIndex.Rifle);
+            }
             if (!photonView.IsMine) return;
             var fixedDeltaTime = Time.fixedDeltaTime;
             Move(fixedDeltaTime);
@@ -69,21 +76,9 @@ namespace Game
 
         private void Shoot()
         {
-            if (!_shootAvailable) return;
             var shootAction = _inputActions.MouseAndKeyboard.Shoot;
             if (shootAction.phase != InputActionPhase.Performed) return;
-            PhotonNetwork.Instantiate(bulletPrefab.name, shootPosition.position, shootPosition.rotation);
-            _shootAvailable = false;
-            StartCoroutine(ShootCooldown());
-        }
-
-        private IEnumerator ShootCooldown()
-        {
-            for (float i = 0; i < shootCooldown; i += Time.deltaTime)
-            {
-                yield return null;
-            }
-            _shootAvailable = true;
+            _weapon.Shoot();
         }
     }
 }

@@ -1,9 +1,16 @@
-﻿namespace Game.Interfaces
+﻿
+using ComponentScripts;
+using UnityEngine;
+
+namespace Game.Interfaces
 {
     public interface IWeapon
     {
-        public int Damage { get; set; }
-        public float ShootCooldown { get; set; }
+        public WeaponComponent WeaponComponent { get;}
+        public GameObject BulletPrefab { get;}
+        public Transform ShootPosition { get;}
+        public bool ShootAvailable { get;}
+        public float ShootCooldown { get;}
 
         public void Shoot();
     }

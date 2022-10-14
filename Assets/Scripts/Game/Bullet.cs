@@ -1,19 +1,15 @@
-﻿using System;
+﻿using ComponentScripts;
 using Game.Interfaces;
 using Photon.Pun;
 using UnityEngine;
 
 namespace Game
 {
-    public class Bullet : MonoBehaviour, IBullet
+    public class Bullet : MonoBehaviour
     {
-        [SerializeField] private float startSpeed;
-        [SerializeField] private float maxMoveDistance;
+        [SerializeField] private float maxFlyDistance;
         [SerializeField] private float damage;
-
-        public float MoveSpeed => startSpeed;
-        public float MaxFlyDistance => maxMoveDistance;
-        public float Damage => damage;
+        [SerializeField] private float flySpeed;
 
         private void FixedUpdate()
         {
@@ -25,17 +21,17 @@ namespace Game
             var iEnemy = col.GetComponent<IEnemy>();
             if (iEnemy != null)
             {
-                iEnemy.ReceiveDamage(Damage);
+                iEnemy.ReceiveDamage(damage);
                 PhotonNetwork.Destroy(gameObject);
             }
         }
-        
-        public void Fly(float deltaTime)
+
+        private void Fly(float deltaTime)
         {
-            if (maxMoveDistance > 0)
+            if (maxFlyDistance > 0)
             {
-                var frameMove = Time.fixedDeltaTime * startSpeed;
-                maxMoveDistance -= frameMove;
+                var frameMove = deltaTime * flySpeed;
+                maxFlyDistance -= frameMove;
                 transform.Translate(transform.up * frameMove, Space.World);
             }
             else

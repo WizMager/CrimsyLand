@@ -53,6 +53,15 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpaceBar"",
+                    ""type"": ""Button"",
+                    ""id"": ""c6db5084-b702-4f7d-b964-a3e0738d9599"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,6 +141,17 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3fb0ad74-50c8-4499-ab25-ff0c113c6b62"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpaceBar"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -143,6 +163,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         m_MouseAndKeyboard_Move = m_MouseAndKeyboard.FindAction("Move", throwIfNotFound: true);
         m_MouseAndKeyboard_Aim = m_MouseAndKeyboard.FindAction("Aim", throwIfNotFound: true);
         m_MouseAndKeyboard_Shoot = m_MouseAndKeyboard.FindAction("Shoot", throwIfNotFound: true);
+        m_MouseAndKeyboard_SpaceBar = m_MouseAndKeyboard.FindAction("SpaceBar", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -205,6 +226,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_MouseAndKeyboard_Move;
     private readonly InputAction m_MouseAndKeyboard_Aim;
     private readonly InputAction m_MouseAndKeyboard_Shoot;
+    private readonly InputAction m_MouseAndKeyboard_SpaceBar;
     public struct MouseAndKeyboardActions
     {
         private @InputActions m_Wrapper;
@@ -212,6 +234,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_MouseAndKeyboard_Move;
         public InputAction @Aim => m_Wrapper.m_MouseAndKeyboard_Aim;
         public InputAction @Shoot => m_Wrapper.m_MouseAndKeyboard_Shoot;
+        public InputAction @SpaceBar => m_Wrapper.m_MouseAndKeyboard_SpaceBar;
         public InputActionMap Get() { return m_Wrapper.m_MouseAndKeyboard; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -230,6 +253,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @Shoot.started -= m_Wrapper.m_MouseAndKeyboardActionsCallbackInterface.OnShoot;
                 @Shoot.performed -= m_Wrapper.m_MouseAndKeyboardActionsCallbackInterface.OnShoot;
                 @Shoot.canceled -= m_Wrapper.m_MouseAndKeyboardActionsCallbackInterface.OnShoot;
+                @SpaceBar.started -= m_Wrapper.m_MouseAndKeyboardActionsCallbackInterface.OnSpaceBar;
+                @SpaceBar.performed -= m_Wrapper.m_MouseAndKeyboardActionsCallbackInterface.OnSpaceBar;
+                @SpaceBar.canceled -= m_Wrapper.m_MouseAndKeyboardActionsCallbackInterface.OnSpaceBar;
             }
             m_Wrapper.m_MouseAndKeyboardActionsCallbackInterface = instance;
             if (instance != null)
@@ -243,6 +269,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
+                @SpaceBar.started += instance.OnSpaceBar;
+                @SpaceBar.performed += instance.OnSpaceBar;
+                @SpaceBar.canceled += instance.OnSpaceBar;
             }
         }
     }
@@ -252,5 +281,6 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
+        void OnSpaceBar(InputAction.CallbackContext context);
     }
 }

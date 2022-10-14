@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 5456194525188452165}
   - component: {fileID: 6015569570159901410}
   - component: {fileID: 7030117927299801860}
-  - component: {fileID: 8827010770432231930}
   - component: {fileID: 6417156189014917782}
   - component: {fileID: -7517150337555507488}
+  - component: {fileID: 4866571758542582570}
   m_Layer: 7
-  m_Name: Bullet
+  m_Name: PistolBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,21 +102,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &8827010770432231930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1949895538704787675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4970efc42a1e45ad9c6af58e8dca9a6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startSpeed: 1
-  maxMoveDistance: 20
-  damage: 1
 --- !u!114 &6417156189014917782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,3 +141,18 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &4866571758542582570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949895538704787675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4970efc42a1e45ad9c6af58e8dca9a6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxFlyDistance: 10
+  damage: 1
+  flySpeed: 3
