@@ -10,7 +10,7 @@ namespace Game
 {
     public class EnemySpawnController : MonoBehaviourPunCallbacks
     {
-        [SerializeField] private GameObject enemyPrefab;
+        [SerializeField] private GameObject[] enemyPrefabs;
         [SerializeField] private EnemySpawnComponent enemySpawnComponent;
         [SerializeField] private float spawnCooldown;
         private Transform[] _enemySpawnPositions;
@@ -55,7 +55,8 @@ namespace Game
         private void InstantiateEnemy()
         {
             var randomSpawnPosition = Random.Range(0, _enemySpawnPositions.Length);
-            var enemy = PhotonNetwork.Instantiate(enemyPrefab.name, _enemySpawnPositions[randomSpawnPosition].position, Quaternion.identity).GetComponent<EnemyController>();
+            var randomEnemyType = Random.Range(0, enemyPrefabs.Length);
+            var enemy = PhotonNetwork.Instantiate(enemyPrefabs[randomEnemyType].name, _enemySpawnPositions[randomSpawnPosition].position, Quaternion.identity).GetComponent<EnemyController>();
             enemy.SetPlayersTransform = _playerTransforms;
             _enemies.Add(enemy);
             StartCoroutine(SpawnEnemy());
