@@ -2,8 +2,8 @@
 {
     public interface IDamageable
     {
-        public float Health { get; set; }
+        public float Health { get;}
 
-        public void ReceiveDamage(float damage);
+        public void ChangeHealth(float value);
     }
 }

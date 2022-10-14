@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3295170197093198276}
   - component: {fileID: 5469927238090629191}
   - component: {fileID: 6902896914363842245}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HardEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,3 +188,4 @@ MonoBehaviour:
   moveSpeed: 4
   health: 3
   timeRecheckNearestPlayer: 5
+  damage: 1

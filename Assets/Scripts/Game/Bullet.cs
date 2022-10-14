@@ -1,5 +1,4 @@
-﻿using ComponentScripts;
-using Game.Interfaces;
+﻿using Game.Interfaces;
 using Photon.Pun;
 using UnityEngine;
 
@@ -21,7 +20,7 @@ namespace Game
             var iEnemy = col.GetComponent<IEnemy>();
             if (iEnemy != null)
             {
-                iEnemy.ReceiveDamage(damage);
+                iEnemy.ChangeHealth(-damage);
                 PhotonNetwork.Destroy(gameObject);
             }
         }

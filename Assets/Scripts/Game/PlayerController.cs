@@ -1,4 +1,5 @@
-﻿using ComponentScripts;
+﻿using System;
+using ComponentScripts;
 using Game.Interfaces;
 using Photon.Pun;
 using UnityEngine;
@@ -6,24 +7,29 @@ using UnityEngine.InputSystem;
 
 namespace Game
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, IPlayer
     {
+        public Action<float> OnHealthChange;
         [SerializeField] private PhotonView photonView;
         [SerializeField] private Transform playerBody;
         [SerializeField] private WeaponContainerComponent weaponContainer;
         [SerializeField] private float moveSpeed;
+        [SerializeField] private float startHealth;
         private WeaponSwitcher _weaponSwitcher;
         private IWeapon _weapon;
         private Camera _mainCamera;
         private InputActions _inputActions;
         private Vector3 _mouseWorldPosition;
-
+        
+        public float Health { get; private set; }
+        
         #region MonoBeh
 
         private void Awake()
         {
             _inputActions = new InputActions();
             _mainCamera = Camera.main;
+            Health = startHealth;
             _weaponSwitcher = new WeaponSwitcher(weaponContainer.GetWeaponsGameObjects);
             _weapon = _weaponSwitcher.SwitchWeapon(WeaponIndex.Pistol);
         }
@@ -55,7 +61,7 @@ namespace Game
             if (moveAction.phase != InputActionPhase.Started) return;
             var moveDirection = moveAction.ReadValue<Vector2>() * moveSpeed * deltaTime;
             var currentPosition = playerBody.position;
-            playerBody.position = new Vector3(moveDirection.x + currentPosition.x, moveDirection.y + currentPosition.y);
+            transform.position = new Vector3(moveDirection.x + currentPosition.x, moveDirection.y + currentPosition.y);
         }
 
         private void Aim()
@@ -74,6 +80,12 @@ namespace Game
             var shootAction = _inputActions.MouseAndKeyboard.Shoot;
             if (shootAction.phase != InputActionPhase.Performed) return;
             _weapon.Shoot();
+        }
+        public void ChangeHealth(float value)
+        {
+            Health += value;
+            OnHealthChange?.Invoke(Health);
+            Debug.Log(Health);
         }
     }
 }

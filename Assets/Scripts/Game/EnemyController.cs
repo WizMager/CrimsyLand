@@ -11,6 +11,7 @@ namespace Game
         [SerializeField] private float moveSpeed;
         [SerializeField] private int health;
         [SerializeField] private float timeRecheckNearestPlayer;
+        [SerializeField] private float damage;
         private List<Transform> _playersTransform = new List<Transform>();
         private Transform _currentTarget;
         
@@ -37,6 +38,12 @@ namespace Game
         private void FixedUpdate()
         {
            Move(Time.fixedDeltaTime); 
+        }
+
+        private void OnCollisionStay2D(Collision2D collision)
+        {
+            var player = collision.gameObject.GetComponent<IPlayer>();
+            player?.ChangeHealth(-damage * Time.deltaTime);
         }
 
         private void OnDestroy()
@@ -81,9 +88,9 @@ namespace Game
         #endregion
 
         
-        public void ReceiveDamage(float damage)
+        public void ChangeHealth(float value)
         {
-            Health -= damage;
+            Health += value;
             if (Health > 0) return;
             PhotonNetwork.Destroy(gameObject);
         }
