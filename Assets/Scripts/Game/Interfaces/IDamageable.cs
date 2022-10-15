@@ -4,6 +4,6 @@
     {
         public float Health { get;}
 
-        public void ChangeHealth(float value);
+        public void ChangeHealthSend(float value);
     }
 }

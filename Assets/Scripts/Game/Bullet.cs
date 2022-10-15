@@ -12,15 +12,17 @@ namespace Game
 
         private void FixedUpdate()
         {
+            if (!PhotonNetwork.IsMasterClient) return;
             Fly(Time.fixedDeltaTime);
         }
 
         private void OnTriggerEnter2D(Collider2D col)
         {
+            if (!PhotonNetwork.IsMasterClient) return;
             var iEnemy = col.GetComponent<IEnemy>();
             if (iEnemy != null)
             {
-                iEnemy.ChangeHealth(-damage);
+                iEnemy.ChangeHealthSend(-damage);
                 PhotonNetwork.Destroy(gameObject);
             }
         }

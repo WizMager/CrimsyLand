@@ -1,8 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using Game.Interfaces;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Game
 {
@@ -32,19 +36,31 @@ namespace Game
 
         private void Start()
         {
+            if (!PhotonNetwork.IsMasterClient) return;
             Health = health;
             StartCoroutine(RecheckNearestEnemyCooldown());
         }
-        
+
+        private void OnEnable()
+        {
+            PhotonNetwork.NetworkingClient.EventReceived += OnMessageReceive;
+        }
+
         private void FixedUpdate()
         {
+            if (!PhotonNetwork.IsMasterClient) return;
            Move(Time.fixedDeltaTime); 
         }
 
         private void OnCollisionStay2D(Collision2D collision)
         {
             var player = collision.gameObject.GetComponent<IPlayer>();
-            player?.ChangeHealth(-damage * Time.deltaTime);
+            player?.ChangeHealthSend(-damage * Time.deltaTime);
+        }
+
+        private void OnDisable()
+        {
+            PhotonNetwork.NetworkingClient.EventReceived -= OnMessageReceive;
         }
 
         private void OnDestroy()
@@ -88,15 +104,30 @@ namespace Game
 
         #endregion
 
+        private void OnMessageReceive(EventData data)
+        {
+            switch (data.Code)
+            {
+                case EventCodePhoton.ChangeEnemyHealthEvent:
+                    ChangeHealthReceive((float)data.CustomData);
+                    break;
+            }
+        }
         
-        public void ChangeHealth(float value)
+        public void ChangeHealthSend(float value)
+        {
+            PhotonNetwork.RaiseEvent(EventCodePhoton.ChangeEnemyHealthEvent, value,
+                new RaiseEventOptions {Receivers = ReceiverGroup.MasterClient}, SendOptions.SendReliable);
+        }
+
+        private void ChangeHealthReceive(float value)
         {
             Health += value;
             if (Health > 0) return;
             if (Random.Range(0, 101) <= bonusDropChance)
             {
                 PhotonNetwork.Instantiate("Bonus", transform.position, Quaternion.identity); 
-            }
+            } 
             PhotonNetwork.Destroy(gameObject);
         }
         

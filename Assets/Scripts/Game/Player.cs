@@ -81,11 +81,10 @@ namespace Game
             if (shootAction.phase != InputActionPhase.Performed) return;
             _weapon.Shoot();
         }
-        public void ChangeHealth(float value)
+        public void ChangeHealthSend(float value)
         {
             Health += value;
             OnHealthChange?.Invoke(Health);
-            Debug.Log(Health);
         }
 
         public void ReceiveBonus(BonusType bonusType)
