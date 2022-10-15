@@ -1,6 +1,7 @@
 ﻿using System;
 using ComponentScripts;
 using Game.Interfaces;
+using Game.Weapons;
 using UnityEngine;
 
 namespace Game

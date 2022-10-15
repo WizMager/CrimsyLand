@@ -2,35 +2,34 @@
 using System.Collections.Generic;
 using ComponentScripts;
 using Photon.Pun;
-using Photon.Realtime;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Game
 {
-    public class EnemySpawnController : MonoBehaviourPunCallbacks
+    public class EnemySpawn : MonoBehaviourPunCallbacks
     {
         [SerializeField] private GameObject[] enemyPrefabs;
         [SerializeField] private EnemySpawnComponent enemySpawnComponent;
         [SerializeField] private float spawnCooldown;
         private Transform[] _enemySpawnPositions;
         private readonly List<Transform> _playerTransforms = new List<Transform>();
-        private readonly List<EnemyController> _enemies = new List<EnemyController>();
+        private readonly List<Enemy> _enemies = new List<Enemy>();
 
         private void Start()
         {
             if (!PhotonNetwork.IsMasterClient) return;
-            var masterPlayer = FindObjectOfType<PlayerController>();
+            var masterPlayer = FindObjectOfType<Player>();
             _playerTransforms.Add(masterPlayer.transform);
             _enemySpawnPositions = enemySpawnComponent.GetSpawnPositions;
             StartCoroutine(SpawnEnemy());
         }
 
-        public override void OnPlayerEnteredRoom(Player newPlayer)
+        public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
         {
             if (!PhotonNetwork.IsMasterClient) return;
             base.OnPlayerEnteredRoom(newPlayer);
-            var players = FindObjectsOfType<PlayerController>();
+            var players = FindObjectsOfType<Player>();
             _playerTransforms.Clear();
             foreach (var player in players)
             {
@@ -56,7 +55,7 @@ namespace Game
         {
             var randomSpawnPosition = Random.Range(0, _enemySpawnPositions.Length);
             var randomEnemyType = Random.Range(0, enemyPrefabs.Length);
-            var enemy = PhotonNetwork.Instantiate($"Enemies/{enemyPrefabs[randomEnemyType].name}", _enemySpawnPositions[randomSpawnPosition].position, Quaternion.identity).GetComponent<EnemyController>();
+            var enemy = PhotonNetwork.Instantiate($"Enemies/{enemyPrefabs[randomEnemyType].name}", _enemySpawnPositions[randomSpawnPosition].position, Quaternion.identity).GetComponent<Enemy>();
             enemy.SetPlayersTransform = _playerTransforms;
             _enemies.Add(enemy);
             StartCoroutine(SpawnEnemy());

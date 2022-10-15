@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 namespace Game
 {
-    public class PlayerController : MonoBehaviour, IPlayer
+    public class Player : MonoBehaviour, IPlayer
     {
         public Action<float> OnHealthChange;
         [SerializeField] private PhotonView photonView;
@@ -86,6 +86,23 @@ namespace Game
             Health += value;
             OnHealthChange?.Invoke(Health);
             Debug.Log(Health);
+        }
+
+        public void ReceiveBonus(BonusType bonusType)
+        {
+            switch (bonusType)
+            {
+                case BonusType.None:
+                    break;
+                case BonusType.Pistol:
+                    _weapon = _weaponSwitcher.SwitchWeapon(WeaponIndex.Pistol);
+                    break;
+                case BonusType.Rifle:
+                    _weapon = _weaponSwitcher.SwitchWeapon(WeaponIndex.Rifle);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(bonusType), bonusType, null);
+            }
         }
     }
 }

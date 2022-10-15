@@ -2,6 +2,6 @@
 {
     public interface IPlayer : IDamageable
     {
-        
+        public void ReceiveBonus(BonusType bonusType);
     }
 }

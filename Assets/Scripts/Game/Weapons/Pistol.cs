@@ -4,7 +4,7 @@ using Game.Interfaces;
 using Photon.Pun;
 using UnityEngine;
 
-namespace Game
+namespace Game.Weapons
 {
     public class Pistol : IWeapon
     {

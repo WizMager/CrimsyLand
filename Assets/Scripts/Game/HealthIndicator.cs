@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace Game
@@ -7,22 +6,11 @@ namespace Game
     public class HealthIndicator : MonoBehaviour
     {
         [SerializeField] private Slider healthSlider;
-        [SerializeField] private PlayerController playerController;
-        private Camera _mainCamera;
-
-        private void Awake()
-        {
-            _mainCamera = Camera.main;
-        }
+        [SerializeField] private Player player;
 
         private void Start()
         {
-            playerController.OnHealthChange += OnHealthChangeHandler;
-        }
-
-        private void FixedUpdate()
-        {
-            //healthSlider.gameObject.transform.rotation = _mainCamera.transform.rotation;
+            player.OnHealthChange += OnHealthChangeHandler;
         }
 
         private void OnHealthChangeHandler(float healthValue)

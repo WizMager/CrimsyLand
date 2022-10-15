@@ -6,16 +6,17 @@ using UnityEngine;
 
 namespace Game
 {
-    public class EnemyController : MonoBehaviour, IEnemy
+    public class Enemy : MonoBehaviour, IEnemy
     {
         [SerializeField] private float moveSpeed;
         [SerializeField] private int health;
         [SerializeField] private float timeRecheckNearestPlayer;
         [SerializeField] private float damage;
+        [SerializeField] private int bonusDropChance;
         private List<Transform> _playersTransform = new List<Transform>();
         private Transform _currentTarget;
         
-        public float Health { get; set; }
+        public float Health { get; private set; }
         public float MoveSpeed => moveSpeed;
         public List<Transform> SetPlayersTransform
         {
@@ -92,6 +93,10 @@ namespace Game
         {
             Health += value;
             if (Health > 0) return;
+            if (Random.Range(0, 101) <= bonusDropChance)
+            {
+                PhotonNetwork.Instantiate("Bonus", transform.position, Quaternion.identity); 
+            }
             PhotonNetwork.Destroy(gameObject);
         }
         

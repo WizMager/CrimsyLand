@@ -189,3 +189,4 @@ MonoBehaviour:
   health: 1
   timeRecheckNearestPlayer: 5
   damage: 0.1
+  bonusDropChance: 100
