@@ -100,6 +100,8 @@ namespace Lobby
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
             statusText.text = message;
+            createGame.interactable = true;
+            findGame.interactable = true;
         }
 
         public override void OnCreateRoomFailed(short returnCode, string message)
