@@ -446,9 +446,11 @@ GameObject:
   - component: {fileID: 6974765501054170493}
   - component: {fileID: 5465039112697948460}
   - component: {fileID: 348155207917215777}
+  - component: {fileID: 4209764992877133800}
   - component: {fileID: 1749258497576289563}
   - component: {fileID: 5113974174237078359}
   - component: {fileID: 9038144766609247655}
+  - component: {fileID: 1696562437163386109}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -559,6 +561,20 @@ MonoBehaviour:
   photonView: {fileID: 3563326149589687580}
   input: {fileID: 9038144766609247655}
   useActionMap: Shoot
+--- !u!114 &4209764992877133800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3563326149589687568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ab65245de3d4f6ab0c4869f0e65591f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthSlider: {fileID: 3338420120834348139}
+  startHealth: 100
 --- !u!70 &1749258497576289563
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -626,6 +642,18 @@ MonoBehaviour:
   m_DefaultActionMap: MouseAndKeyboard
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1696562437163386109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3563326149589687568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b57b879e905410daec9ae733a675000, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4212697120497315031
 GameObject:
   m_ObjectHideFlags: 0

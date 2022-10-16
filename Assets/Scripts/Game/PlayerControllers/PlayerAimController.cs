@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Game.PlayerControls
+namespace Game.PlayerControllers
 {
     public class PlayerAimController : MonoBehaviour
     {

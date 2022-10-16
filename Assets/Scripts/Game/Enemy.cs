@@ -22,8 +22,9 @@ namespace Game
         {
             set
             {
-                _playersTransform.Clear();
+                //_playersTransform.Clear();
                 _playersTransform = value;
+                Debug.Log(_playersTransform.Count);
                 _currentTarget = _playersTransform[CheckNearestPlayerIndex()];
             }
         }
@@ -32,19 +33,21 @@ namespace Game
 
         private void Start()
         {
+            if (!PhotonNetwork.IsMasterClient) return;
             Health = health;
             StartCoroutine(RecheckNearestEnemyCooldown());
         }
         
         private void FixedUpdate()
-        {
-           Move(Time.fixedDeltaTime); 
+        { 
+            if (!PhotonNetwork.IsMasterClient) return; 
+            //Move(Time.fixedDeltaTime); 
         }
 
         private void OnCollisionStay2D(Collision2D collision)
         {
-            var player = collision.gameObject.GetComponent<IPlayer>();
-            player?.ChangeHealth(-damage * Time.deltaTime);
+            //var player = collision.gameObject.GetComponent<IPlayer>();
+           // player?.ChangeHealth(-damage * Time.deltaTime);
         }
 
         private void OnDestroy()
