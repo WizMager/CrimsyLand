@@ -5,9 +5,11 @@ namespace Game
 {
     public class PlayerSpawn : MonoBehaviour
     {
+        [SerializeField] private GameObject playerPrefab;
         private void Start()
         {
-            PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity);
+            if (!PhotonNetwork.LocalPlayer.IsLocal) return;
+            PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
         }
     }
 }
