@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using System;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,6 +7,7 @@ namespace Game.PlayerControllers
 {
     public class PlayerShootController : MonoBehaviour
     {
+        public Action OnShootPress;
         [SerializeField] private PhotonView photonView;
         [SerializeField] private PlayerInput input;
         [SerializeField] private string useActionMap;
@@ -30,7 +32,7 @@ namespace Game.PlayerControllers
         {
             var shootAction = input.actions[useActionMap];
             if (shootAction.phase != InputActionPhase.Performed) return;
-            Debug.Log("Shoot");
+            OnShootPress?.Invoke();
         }
     }
 }

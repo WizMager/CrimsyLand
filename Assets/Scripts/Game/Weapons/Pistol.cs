@@ -26,7 +26,7 @@ namespace Game.Weapons
         public void Shoot()
         {
             if (!ShootAvailable) return;
-            PhotonNetwork.Instantiate($"Bullets/{BulletPrefab.name}", ShootPosition.position, ShootPosition.rotation);
+            PhotonNetwork.Instantiate(BulletPrefab.name, ShootPosition.position, ShootPosition.rotation);
             ShootAvailable = false;
             WeaponComponent.StartCoroutine(ShootCooldownTimer());
         }

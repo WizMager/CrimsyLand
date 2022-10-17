@@ -190,3 +190,4 @@ MonoBehaviour:
   timeRecheckNearestPlayer: 5
   damage: 0.5
   bonusDropChance: 100
+  photonView: {fileID: 3295170197093198276}

@@ -447,6 +447,7 @@ GameObject:
   - component: {fileID: 5465039112697948460}
   - component: {fileID: 348155207917215777}
   - component: {fileID: 4209764992877133800}
+  - component: {fileID: 4764670655354533519}
   - component: {fileID: 1749258497576289563}
   - component: {fileID: 5113974174237078359}
   - component: {fileID: 9038144766609247655}
@@ -576,6 +577,23 @@ MonoBehaviour:
   photonView: {fileID: 3563326149589687580}
   healthSlider: {fileID: 3338420120834348139}
   startHealth: 100
+--- !u!114 &4764670655354533519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3563326149589687568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 157ba3ef902548d1976ba067a8b40541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponGameObjects:
+  - {fileID: 799083403933995132}
+  - {fileID: 8087446330033103814}
+  photonView: {fileID: 3563326149589687580}
+  shootController: {fileID: 348155207917215777}
 --- !u!70 &1749258497576289563
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -898,7 +916,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5208020592729346887, guid: 42264a44d203af543a67064a3ca0beef, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 42264a44d203af543a67064a3ca0beef, type: 3}

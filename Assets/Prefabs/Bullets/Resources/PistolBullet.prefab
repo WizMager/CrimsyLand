@@ -156,3 +156,4 @@ MonoBehaviour:
   maxFlyDistance: 10
   damage: 1
   flySpeed: 3
+  photonView: {fileID: -7517150337555507488}

@@ -6,5 +6,6 @@
         public const byte ReadyStatusChange = 1;
         public const byte NewPlayerEnterRoom = 2;
         public const byte ReadyStatusRefreshSend = 3;
+        public const byte EnemyReceiveDamage = 4;
     }
 }

@@ -1,22 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using Game.Interfaces;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Game
 {
-    public class Enemy : MonoBehaviour, IEnemy
+    public class Enemy : MonoBehaviour, IEnemy, IOnEventCallback
     {
         [SerializeField] private float moveSpeed;
         [SerializeField] private int health;
         [SerializeField] private float timeRecheckNearestPlayer;
         [SerializeField] private float damage;
         [SerializeField] private int bonusDropChance;
+        [SerializeField] private PhotonView photonView;
         private List<Transform> _playersTransform = new List<Transform>();
         private Transform _currentTarget;
         
+        public PhotonView PhotonView { get; private set; }
         public float Health { get; private set; }
         public float MoveSpeed => moveSpeed;
         public List<Transform> SetPlayersTransform
@@ -32,9 +35,15 @@ namespace Game
 
         private void Start()
         {
+            PhotonView = photonView;
             if (!PhotonNetwork.IsMasterClient) return;
             Health = health;
             StartCoroutine(RecheckNearestEnemyCooldown());
+        }
+
+        private void OnEnable()
+        {
+            PhotonNetwork.AddCallbackTarget(this);
         }
 
         private void FixedUpdate()
@@ -47,6 +56,11 @@ namespace Game
         {
             var player = collision.gameObject.GetComponent<IPlayerHealth>();
             player?.ChangeHealth(-damage * Time.fixedDeltaTime);
+        }
+
+        private void OnDisable()
+        {
+            PhotonNetwork.RemoveCallbackTarget(this);
         }
 
         private void OnDestroy()
@@ -90,15 +104,26 @@ namespace Game
 
         #endregion
 
-        
-        public void ChangeHealth(float value)
+        public void ChangeHealth(float value, int id)
         {
-            Health += value;
-            if (Health > 0) return;
-            if (Random.Range(0, 101) <= bonusDropChance)
+            var dictionary = new Dictionary<int, float> {{id, value}};
+            PhotonNetwork.RaiseEvent(EventCodePhoton.EnemyReceiveDamage, dictionary, new RaiseEventOptions {Receivers = ReceiverGroup.MasterClient},
+                SendOptions.SendReliable);
+        }
+
+        private void Change(Dictionary<int, float> idDamage)
+        {
+            var id = 0;
+            var receivedDamage = 0f;
+            foreach (var value in idDamage)
             {
-                //PhotonNetwork.Instantiate("Bonus", transform.position, Quaternion.identity); 
+                id = value.Key;
+                receivedDamage = value.Value;
+                break;
             }
+            if (id != PhotonView.ViewID) return;
+            Health += receivedDamage;
+            if (Health > 0) return;
             PhotonNetwork.Destroy(gameObject);
         }
         
@@ -106,6 +131,16 @@ namespace Game
         {
             transform.position =
                 Vector3.MoveTowards(transform.position, _currentTarget.position, moveSpeed * deltaTime);
+        }
+
+        public void OnEvent(EventData photonEvent)
+        {
+            switch (photonEvent.Code)
+            {
+                case EventCodePhoton.EnemyReceiveDamage:
+                    Change((Dictionary<int, float>)photonEvent.CustomData);
+                    break;
+            }
         }
     }
 }
