@@ -191,3 +191,4 @@ MonoBehaviour:
   damage: 0.1
   bonusDropChance: 100
   photonView: {fileID: 3295170197093198276}
+  bonusPrefab: {fileID: 2579613787889284326, guid: 12a7e1652c428af48af092921d49faf3, type: 3}

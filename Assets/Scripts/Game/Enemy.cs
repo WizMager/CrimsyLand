@@ -16,6 +16,7 @@ namespace Game
         [SerializeField] private float damage;
         [SerializeField] private int bonusDropChance;
         [SerializeField] private PhotonView photonView;
+        [SerializeField] private GameObject bonusPrefab;
         private List<Transform> _playersTransform = new List<Transform>();
         private Transform _currentTarget;
         
@@ -111,7 +112,7 @@ namespace Game
                 SendOptions.SendReliable);
         }
 
-        private void Change(Dictionary<int, float> idDamage)
+        private void ChangeHealthValue(Dictionary<int, float> idDamage)
         {
             var id = 0;
             var receivedDamage = 0f;
@@ -124,7 +125,14 @@ namespace Game
             if (id != PhotonView.ViewID) return;
             Health += receivedDamage;
             if (Health > 0) return;
+            BonusDropCheck();
             PhotonNetwork.Destroy(gameObject);
+        }
+
+        private void BonusDropCheck()
+        {
+            if (Random.Range(0, 101) > bonusDropChance) return;
+            PhotonNetwork.Instantiate(bonusPrefab.name, transform.position, Quaternion.identity);
         }
         
         public void Move(float deltaTime)
@@ -138,7 +146,7 @@ namespace Game
             switch (photonEvent.Code)
             {
                 case EventCodePhoton.EnemyReceiveDamage:
-                    Change((Dictionary<int, float>)photonEvent.CustomData);
+                    ChangeHealthValue((Dictionary<int, float>)photonEvent.CustomData);
                     break;
             }
         }

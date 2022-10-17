@@ -448,6 +448,7 @@ GameObject:
   - component: {fileID: 348155207917215777}
   - component: {fileID: 4209764992877133800}
   - component: {fileID: 4764670655354533519}
+  - component: {fileID: -8801570335298973605}
   - component: {fileID: 1749258497576289563}
   - component: {fileID: 5113974174237078359}
   - component: {fileID: 9038144766609247655}
@@ -594,6 +595,20 @@ MonoBehaviour:
   - {fileID: 8087446330033103814}
   photonView: {fileID: 3563326149589687580}
   shootController: {fileID: 348155207917215777}
+  bonusController: {fileID: -8801570335298973605}
+--- !u!114 &-8801570335298973605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3563326149589687568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ab7cbdd4e2f414da3a2f60994b63ea4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  photonView: {fileID: 3563326149589687580}
 --- !u!70 &1749258497576289563
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
