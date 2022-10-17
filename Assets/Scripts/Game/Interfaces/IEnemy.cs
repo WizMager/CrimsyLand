@@ -1,6 +1,6 @@
 ﻿namespace Game.Interfaces
 {
-    public interface IEnemy : IDamageable, IMovable
+    public interface IEnemy : IHealth, IMovable
     {
         
     }

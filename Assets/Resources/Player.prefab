@@ -453,7 +453,7 @@ GameObject:
   - component: {fileID: 1696562437163386109}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -573,6 +573,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ab65245de3d4f6ab0c4869f0e65591f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  photonView: {fileID: 3563326149589687580}
   healthSlider: {fileID: 3338420120834348139}
   startHealth: 100
 --- !u!70 &1749258497576289563
@@ -603,7 +604,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 1000000
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0

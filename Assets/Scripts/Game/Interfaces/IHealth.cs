@@ -1,6 +1,6 @@
 ﻿namespace Game.Interfaces
 {
-    public interface IDamageable
+    public interface IHealth
     {
         public float Health { get;}
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Game.Interfaces;
 using Photon.Pun;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Game
 {
@@ -35,7 +36,7 @@ namespace Game
             Health = health;
             StartCoroutine(RecheckNearestEnemyCooldown());
         }
-        
+
         private void FixedUpdate()
         { 
             if (!PhotonNetwork.IsMasterClient) return; 
@@ -44,8 +45,8 @@ namespace Game
 
         private void OnCollisionStay2D(Collision2D collision)
         {
-            //var player = collision.gameObject.GetComponent<IPlayer>();
-           // player?.ChangeHealth(-damage * Time.deltaTime);
+            var player = collision.gameObject.GetComponent<IPlayerHealth>();
+            player?.ChangeHealth(-damage * Time.fixedDeltaTime);
         }
 
         private void OnDestroy()
@@ -96,7 +97,7 @@ namespace Game
             if (Health > 0) return;
             if (Random.Range(0, 101) <= bonusDropChance)
             {
-                PhotonNetwork.Instantiate("Bonus", transform.position, Quaternion.identity); 
+                //PhotonNetwork.Instantiate("Bonus", transform.position, Quaternion.identity); 
             }
             PhotonNetwork.Destroy(gameObject);
         }
