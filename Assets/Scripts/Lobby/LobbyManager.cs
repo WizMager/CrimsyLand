@@ -116,6 +116,10 @@ namespace Lobby
                 if (statusValue) continue;
                 return;
             }
+
+            var currentPlayersNumber = _playersIndicatorsList.Count;
+            PhotonNetwork.CurrentRoom.MaxPlayers = (byte)currentPlayersNumber;
+            PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.LoadLevel(1);
         }
 

@@ -22,9 +22,7 @@ namespace Game
         {
             set
             {
-                //_playersTransform.Clear();
                 _playersTransform = value;
-                Debug.Log(_playersTransform.Count);
                 _currentTarget = _playersTransform[CheckNearestPlayerIndex()];
             }
         }
@@ -41,7 +39,7 @@ namespace Game
         private void FixedUpdate()
         { 
             if (!PhotonNetwork.IsMasterClient) return; 
-            //Move(Time.fixedDeltaTime); 
+            Move(Time.fixedDeltaTime); 
         }
 
         private void OnCollisionStay2D(Collision2D collision)

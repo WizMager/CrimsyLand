@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using ComponentScripts;
-using Game.PlayerControllers;
 using Photon.Pun;
-using Photon.Realtime;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -18,12 +15,12 @@ namespace Game
         [SerializeField] private PlayerSpawn playerSpawn;
         private Transform[] _enemySpawnPositions;
         private readonly List<Transform> _playerTransforms = new List<Transform>();
-        private readonly List<Enemy> _enemies = new List<Enemy>();
+        //private readonly List<Enemy> _enemies = new List<Enemy>();
 
         private void Awake()
         {
             if (!PhotonNetwork.IsMasterClient) return;
-            playerSpawn.OnPlayerInstantiated += OnAddPlayerHandler;
+            playerSpawn.OnPlayersInstantiated += OnAddPlayerHandler;
         }
 
         private void Start()
@@ -35,18 +32,13 @@ namespace Game
 
         private void OnAddPlayerHandler()
         {
-            _playerTransforms.Clear();
             var playersList = PhotonNetwork.PlayerList;
             foreach (var player in playersList)
             {
                 var playerObject = (GameObject)player.TagObject;
                 _playerTransforms.Add(playerObject.GetComponent<Transform>());
             }
-            
-            // foreach (var enemy in _enemies)
-            // {
-            //     enemy.SetPlayersTransform = _playerTransforms;
-            // }
+            playerSpawn.OnPlayersInstantiated -= OnAddPlayerHandler;
         }
         
         private IEnumerator SpawnEnemy()

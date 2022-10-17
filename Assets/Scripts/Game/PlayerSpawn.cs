@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using ExitGames.Client.Photon;
 using Photon.Pun;
-using Photon.Pun.Demo.PunBasics;
 using Photon.Realtime;
 using UnityEngine;
 
@@ -10,8 +8,9 @@ namespace Game
 {
     public class PlayerSpawn : MonoBehaviour, IOnEventCallback
     {
-        public Action OnPlayerInstantiated;
+        public Action OnPlayersInstantiated;
         [SerializeField] private GameObject playerPrefab;
+        private int _spawnCounter;
 
         private void OnEnable()
         {
@@ -20,14 +19,9 @@ namespace Game
 
         private void Start()
         {
-            if (PlayerManager.LocalPlayerInstance == null)
-            {
-                PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
-                PhotonNetwork.RaiseEvent(EventCodePhoton.InstantiateAddPlayerComplete, null, new RaiseEventOptions {Receivers = ReceiverGroup.MasterClient},
-                    SendOptions.SendReliable);
-            }
-            
-            
+            PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
+            PhotonNetwork.RaiseEvent(EventCodePhoton.InstantiateNewPlayerComplete, null, new RaiseEventOptions {Receivers = ReceiverGroup.MasterClient},
+                SendOptions.SendReliable);
         }
 
         private void OnDisable()
@@ -39,8 +33,10 @@ namespace Game
         {
             switch (photonEvent.Code)
             {
-                case EventCodePhoton.InstantiateAddPlayerComplete:
-                    OnPlayerInstantiated?.Invoke();
+                case EventCodePhoton.InstantiateNewPlayerComplete:
+                    _spawnCounter++;
+                    if (_spawnCounter != PhotonNetwork.CurrentRoom.MaxPlayers) return;
+                    OnPlayersInstantiated?.Invoke();
                     break;
             }
         }
