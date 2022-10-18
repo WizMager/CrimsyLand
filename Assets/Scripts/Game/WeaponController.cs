@@ -12,7 +12,7 @@ namespace Game
         [SerializeField] private GameObject[] weaponGameObjects;
         [SerializeField] private PhotonView photonView;
         [SerializeField] private PlayerShootController shootController;
-        [SerializeField] private PlayerBonusController bonusController;
+        [SerializeField] private PlayerBonusReceiverController bonusReceiverController;
         private WeaponSwitcher _weaponSwitcher;
         private IWeapon _currentWeapon;
 
@@ -22,7 +22,7 @@ namespace Game
             _weaponSwitcher = new WeaponSwitcher(weaponGameObjects);
             _currentWeapon = _weaponSwitcher.SwitchWeapon(WeaponIndex.Pistol);
             shootController.OnShootPress += OnShootPressHandler;
-            bonusController.OnWeaponChange += OnWeaponChangeHandler;
+            bonusReceiverController.OnWeaponChange += OnWeaponChangeHandler;
         }
 
         private void OnWeaponChangeHandler(int weaponIndex)

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using ComponentScripts;
 using ExitGames.Client.Photon;
 using Game.Interfaces;
@@ -12,6 +13,7 @@ namespace Game
     public class Bonus : MonoBehaviour, IOnEventCallback
     {
         [SerializeField] private BonusesContainerComponent bonuses;
+        [SerializeField] private PhotonView photonView;
         [SerializeField] private float selfDestroyTime;
         private BonusType _currentBonus;
 
@@ -36,10 +38,11 @@ namespace Game
 
         private void OnTriggerEnter2D(Collider2D col)
         {
-            var player = col.GetComponent<IBonus>();
+            if (!PhotonNetwork.IsMasterClient) return;
+            var player = col.GetComponent<IBonusReceiver>();
             if (player != null)
             {
-                player.ReceiveBonus(_currentBonus, player.PhotonView.ViewID);
+                player.ReceiveBonus(player.PhotonView.ViewID, (int)_currentBonus);
                 PhotonNetwork.Destroy(gameObject);
             }
         }
@@ -68,16 +71,26 @@ namespace Game
         private void BonusSelect(BonusComponent[] bonusTypeScripts)
         {
             var randomIndex = Random.Range(0, bonusTypeScripts.Length);
-            PhotonNetwork.RaiseEvent(EventCodePhoton.ChosenBonusSend, randomIndex, new RaiseEventOptions{ Receivers = ReceiverGroup.All},
+            var idBonusIndex = new Dictionary<int, int> {{photonView.ViewID, randomIndex}};
+            PhotonNetwork.RaiseEvent(EventCodePhoton.ChosenBonusSend, idBonusIndex, new RaiseEventOptions{ Receivers = ReceiverGroup.All},
                 SendOptions.SendReliable);
         }
 
-        private void BonusSelectedReceive(int index)
+        private void BonusSelectedReceive(Dictionary<int, int> idBonusIndex)
         {
+            var id = 0;
+            var bonusIndex = 0;
+            foreach (var value in idBonusIndex)
+            {
+                id = value.Key;
+                bonusIndex = value.Value;
+            }
+
+            if (id != photonView.ViewID) return;
             var bonusesComponents = bonuses.GetBonusesScripts;
             for (int i = 0; i < bonusesComponents.Length; i++)
             {
-                if (i != index) continue;
+                if (i != bonusIndex) continue;
                 bonusesComponents[i].gameObject.SetActive(true);
                 _currentBonus = bonusesComponents[i].GetBonusType;
             }
@@ -87,7 +100,7 @@ namespace Game
         {
             if (photonEvent.Code == EventCodePhoton.ChosenBonusSend)
             {
-                BonusSelectedReceive((int)photonEvent.CustomData);
+                BonusSelectedReceive((Dictionary<int, int>)photonEvent.CustomData);
             }
         }
     }

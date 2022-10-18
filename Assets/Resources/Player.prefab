@@ -595,7 +595,7 @@ MonoBehaviour:
   - {fileID: 8087446330033103814}
   photonView: {fileID: 3563326149589687580}
   shootController: {fileID: 348155207917215777}
-  bonusController: {fileID: -8801570335298973605}
+  bonusReceiverController: {fileID: -8801570335298973605}
 --- !u!114 &-8801570335298973605
 MonoBehaviour:
   m_ObjectHideFlags: 0

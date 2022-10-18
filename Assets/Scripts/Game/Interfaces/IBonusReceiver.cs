@@ -2,10 +2,10 @@
 
 namespace Game.Interfaces
 {
-    public interface IBonus
+    public interface IBonusReceiver
     {
         public PhotonView PhotonView { get;}
 
-        public void ReceiveBonus(BonusType bonusType, int id);
+        public void ReceiveBonus(int id, int bonusType);
     }
 }

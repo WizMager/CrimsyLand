@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bonuses: {fileID: 7395422952896979500}
+  photonView: {fileID: -7214936811913890492}
   selfDestroyTime: 3
 --- !u!114 &7395422952896979500
 MonoBehaviour:
