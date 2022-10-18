@@ -19,18 +19,14 @@ namespace Game.Player
 
         public void ReceiveBonus(int id, int bonusType)
         {
-            Photon.Realtime.Player player = null;
-            foreach (var playerOne in PhotonNetwork.PlayerList)
-            {
-                if (id != playerOne.ActorNumber) continue;
-                player = playerOne;
-            }
-            photonView.RPC("BonusTake", player, bonusType);
+            photonView.RPC("BonusTake", RpcTarget.All, id, bonusType);
         }
 
         [PunRPC]
-        private void BonusTake(int bonusIndex)
+        private void BonusTake(int id, int bonusIndex)
         {
+            if (id != photonView.ViewID) return;
+            Debug.Log(bonusIndex);
             switch (bonusIndex)
             {
                 case (int)BonusType.None:
